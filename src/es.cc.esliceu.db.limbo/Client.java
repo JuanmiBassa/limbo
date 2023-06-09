@@ -2,17 +2,12 @@ package es.cc.esliceu.db.limbo;
 
 public class Client {
     private String numero_client;
-    private String email;
-    private String nom;
-    private String cognom1;
-    private String cognom2;
-    private String username;
-    private String contrasenya;
-
-    public Client(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
+    private static String email;
+    private static String nom;
+    private static String cognom1;
+    private static String cognom2;
+    private static String username;
+    private static String contrasenya;
 
     public String getNumero_client() {
         return numero_client;
@@ -22,7 +17,7 @@ public class Client {
         this.numero_client = numero_client;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
@@ -30,7 +25,7 @@ public class Client {
         this.email = email;
     }
 
-    public String getNom() {
+    public static String getNom() {
         return nom;
     }
 
@@ -38,7 +33,7 @@ public class Client {
         this.nom = nom;
     }
 
-    public String getCognom1() {
+    public static String getCognom1() {
         return cognom1;
     }
 
@@ -46,7 +41,7 @@ public class Client {
         this.cognom1 = cognom1;
     }
 
-    public String getCognom2() {
+    public static String getCognom2() {
         return cognom2;
     }
 
@@ -54,7 +49,7 @@ public class Client {
         this.cognom2 = cognom2;
     }
 
-    public String getUsername() {
+    public static String getUsername() {
         return username;
     }
 
@@ -62,7 +57,7 @@ public class Client {
         this.username = username;
     }
 
-    public String getContrasenya() {
+    public static String getContrasenya() {
         return contrasenya;
     }
 

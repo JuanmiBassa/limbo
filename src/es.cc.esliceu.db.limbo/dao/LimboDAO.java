@@ -7,6 +7,6 @@ import es.cc.esliceu.db.limbo.Login;
 import java.util.List;
 
 public interface LimboDAO {
-    public void insert(Login user);
-    public String read(String dato);
+    public String insert(String user, String email, String pass, String nom, String llin1, String llin2);
+    public String read(String datoUser, String datoBD);
 }
