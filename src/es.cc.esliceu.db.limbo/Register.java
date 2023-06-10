@@ -11,10 +11,6 @@ import static es.cc.esliceu.db.limbo.Limbo.info;
 public class Register {
     public static void registerProcess() {
         LimboDAO limboDAO = new LimboDaoImpl();
-
-        System.out.println("**************************");
-        System.out.println("**      Registre        **");
-        System.out.println("**************************");
         String username;
         String email;
         String password;
@@ -22,55 +18,63 @@ public class Register {
         String llin1 = "";
         String llin2 = "";
 
-        info("Dime un nombre de usuario:");
+        System.out.println("**************************");
+        System.out.println("**      Registre        **");
+        System.out.println("**************************");
         while (true) {
-            Scanner pregLogin1 = new Scanner(System.in);
-            username = pregLogin1.nextLine();
+            info("Nombre de usuario:");
+            Scanner pregRegis1 = new Scanner(System.in);
+            username = pregRegis1.nextLine();
             if (username != "") {
-                String listaUser = limboDAO.read(username, "username");
+                String listaUser = limboDAO.readRegister(username, "username");
                 if (!listaUser.isEmpty()) {
                     System.out.println("\u001B[33mEl nombre de usuario ya existe, introduzca otro.\u001B[0m");
                 } else {
-                    System.out.println("Email:");
                     break;
                 }
             } else {
                 System.out.println("\u001B[33mEl nombre de usuario no puede estar vacío.\u001B[0m");
             }
         }
+
         while (true) {
-            Scanner pregLogin2 = new Scanner(System.in);
-            email = pregLogin2.nextLine();
+            info("Email:");
+            Scanner pregRegis2 = new Scanner(System.in);
+            email = pregRegis2.nextLine();
             if (email != "") {
-                String listaEmail = limboDAO.read(email, "email");
+                String listaEmail = limboDAO.readRegister(email, "email");
                 if (!listaEmail.isEmpty()) {
                     System.out.println("\u001B[33mEl email introducido ya existe, pruebe a iniciar sesión o introduzca otro.\u001B[0m");
                 } else {
-                    System.out.println("Password:");
-                    Scanner pregLogin3 = new Scanner(System.in);
-                    password = pregLogin3.nextLine();
                     break;
                 }
             } else System.out.println("\u001B[33mEl Email no puede estar vacío.\u001B[0m");
         }
+
         while (true) {
+            info("Contraseña:");
+            Scanner pregRegis3 = new Scanner(System.in);
+            password = pregRegis3.nextLine();
             if (password != "") {
-                System.out.println("Nom:");
-                Scanner pregLogin4 = new Scanner(System.in);
-                nom = pregLogin4.nextLine();
+                info("Nom:");
+                Scanner pregRegis4 = new Scanner(System.in);
+                nom = pregRegis4.nextLine();
                 break;
             } else System.out.println("\u001B[33mEl nombre no puede estar vacío.\u001B[0m");
         }
+
         if (nom != "") {
-            System.out.println("Llinatge1:");
-            Scanner pregLogin5 = new Scanner(System.in);
-            llin1 = pregLogin5.nextLine();
+            info("(Opcional) Llinatge1:");
+            Scanner pregRegis5 = new Scanner(System.in);
+            llin1 = pregRegis5.nextLine();
         } else System.out.println("\u001B[33mEl Primer apellido no puede estar vacío.\u001B[0m");
+
         if (llin1 != "") {
-            System.out.println("Llinatge2:");
-            Scanner pregLogin6 = new Scanner(System.in);
-            llin2 = pregLogin6.nextLine();
+            info("(Opcional) Llinatge2:");
+            Scanner pregRegis6 = new Scanner(System.in);
+            llin2 = pregRegis6.nextLine();
         }
+        // Si quiero llamar a constructor
         // Client client = new Client(username, email, password);
         limboDAO.insert(username, email, password, nom, llin1, llin2);
     }
