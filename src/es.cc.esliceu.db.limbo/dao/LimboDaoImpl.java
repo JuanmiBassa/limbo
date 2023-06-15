@@ -1,6 +1,11 @@
 package es.cc.esliceu.db.limbo.dao;
 
+import es.cc.esliceu.db.limbo.Client;
+import es.cc.esliceu.db.limbo.Producte;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LimboDaoImpl implements LimboDAO {
 
@@ -26,21 +31,22 @@ public class LimboDaoImpl implements LimboDAO {
     }
 
     @Override
-    public String readRegister(String datoUser, String datoBD) {
-        String result = "";
+    public String readRegister(String datoUser, String datoPass) {
         String url = "jdbc:mysql://localhost:3306/limbo";
         String username = "root";
         String password = "";
 
+        String result = "";
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, username, password);
-            String select = "SELECT username FROM client WHERE "+ datoBD +" = ?";
+            String select = "SELECT * FROM client WHERE "+ datoPass +" = ?;";
             PreparedStatement statement = connection.prepareStatement(select);
             statement.setString(1, datoUser);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                result = rs.getString("username");
+                result = rs.getString(datoPass);
             }
             connection.close();
         } catch (Exception e) {
@@ -51,10 +57,11 @@ public class LimboDaoImpl implements LimboDAO {
 
     @Override
     public boolean readLogin(String datoUser, String datoPassw) {
-        boolean encontrado = false;
         String url = "jdbc:mysql://localhost:3306/limbo";
         String username = "root";
         String password = "";
+
+        boolean encontrado = false;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -73,6 +80,43 @@ public class LimboDaoImpl implements LimboDAO {
         }
         return encontrado;
     }
+
+    @Override
+    public List<Producte> readProductos() {
+        String url = "jdbc:mysql://localhost:3306/limbo";
+        String username = "root";
+        String password = "";
+
+        List<Producte> listaProductos = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(url, username, password);
+            String select = "SELECT nom, descripcio, marca, pvp FROM producte ORDER BY RAND() LIMIT ?";
+            PreparedStatement statement = connection.prepareStatement(select);
+            statement.setInt(1, 1);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nom");
+                String descripcion = rs.getString("descripcio");
+                String marca = rs.getString("marca");
+                double precio = rs.getDouble("pvp");
+
+                Producte producto = new Producte();
+                producto.setNom(nombre);
+                producto.setDescripcio(descripcion);
+                producto.setMarca(marca);
+                producto.setPvp(precio);
+
+                listaProductos.add(producto);
+            }
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return listaProductos;
+    }
+
 
 
 }

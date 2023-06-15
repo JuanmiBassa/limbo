@@ -16,38 +16,45 @@ public class Limbo {
         String USERNAME = props.getProperty("user");
         String PASSWORD = props.getProperty("password");
 
-        // info("username " + USERNAME);
-        // Scanner scanner = new Scanner(System.in);
+        titulo("**************************");
+        titulo("**      Limbo App       **");
+        titulo("**************************");
+        info("1)", " Login");
+        info("2)", " Registrar-se");
+        info("h)", " Ayuda");
+        info("x)", " Salir");
 
-
-        System.out.println("**************************");
-        System.out.println("**      Limbo App       **");
-        System.out.println("**************************");
-        System.out.println("1) Login");
-        System.out.println("2) Registrar-se");
-        System.out.println("h) Ajuda");
-        System.out.println("x) Sortir");
-        info("Escollir una opció:");
-        Scanner preg1 = new Scanner(System.in);
-        String resp1 = preg1.nextLine();
-
-        if (Objects.equals(resp1, "1")) {
-            Login.loginProcess();
-        } else if (Objects.equals(resp1, "2")) {
-            Register.registerProcess();
-        } else if (Objects.equals(resp1, "h")) {
-
-        } else if (Objects.equals(resp1, "x")) {
-
-        } else {
-            System.out.println("Respuesta no valida.");
+        while (true) {
+            oblitatorio("Escoge una opción:");
+            Scanner preg1 = new Scanner(System.in);
+            String respUsuari = preg1.nextLine();
+            if (Objects.equals(respUsuari, "1")) {
+                Login.loginProcess();
+                break;
+            } else if (Objects.equals(respUsuari, "2")) {
+                Register.registerProcess();
+                break;
+            } else if (Objects.equals(respUsuari, "h")) {
+                break;
+            } else if (Objects.equals(respUsuari, "x")) {
+                break;
+            } else {
+                error("Respuesta no valida.");
+            }
         }
+
     }
 
-    public static void info(String texte){
-        System.out.println(Color.BLUE_BOLD + "\t" + texte + Color.RESET);
+    public static void info(String texte, String texte2) {
+        System.out.println(Color.BLUE_BOLD + "\t" + texte + Color.RESET + texte2);
     }
-    public static void errada(String texte){
+    public static void error(String texte) {
         System.out.println(Color.RED_BOLD + "\t" + texte + Color.RESET);
+    }
+    public static void oblitatorio(String texte) {
+        System.out.println(Color.MAGENTA + texte + Color.RESET);
+    }
+    public static void titulo(String texte) {
+        System.out.println(Color.YELLOW_BOLD + texte + Color.RESET);
     }
 }

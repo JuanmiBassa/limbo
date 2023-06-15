@@ -2,58 +2,61 @@ package es.cc.esliceu.db.limbo;
 
 import es.cc.esliceu.db.limbo.dao.LimboDAO;
 import es.cc.esliceu.db.limbo.dao.LimboDaoImpl;
+import es.cc.esliceu.db.limbo.util.Color;
 
 import java.util.Scanner;
 
-import static es.cc.esliceu.db.limbo.Limbo.info;
+import static es.cc.esliceu.db.limbo.Limbo.*;
 
 public class Login {
     public static void loginProcess() {
         LimboDAO limboDAO = new LimboDaoImpl();
         String username;
         String password;
+        String usuarioBD;
 
-        System.out.println("***********************");
-        System.out.println("**      Login        **");
-        System.out.println("***********************");
+        titulo("**************************");
+        titulo("**         Login        **");
+        titulo("**************************");
         while (true) {
-            info("Nombre de usuario:");
+            oblitatorio("Nombre de usuario:");
             Scanner pregLogin1 = new Scanner(System.in);
             username = pregLogin1.nextLine();
-            if (username != "") {
-                String listaUser = limboDAO.readRegister(username, "username");
-                if (!listaUser.isEmpty()) {
-                    System.out.println("\u001B[33mUsuario encontrado en el sistema.\u001B[0m");
+            if (!username.isEmpty()) {
+                usuarioBD = limboDAO.readRegister(username, "username");
+                if (!usuarioBD.isEmpty()) {
+                    info("Usuario encontrado en el sistema.", "");
                     break;
                 } else {
-                    System.out.println("\u001B[33mEl usuario no existe, introduzca otro.\u001B[0m");
+                    error("El usuario no existe, introduzca otro.");
                 }
             } else {
-                System.out.println("\u001B[33mEl nombre de usuario no puede estar vacío.\u001B[0m");
+                error("El nombre de usuario no puede estar vacío.");
             }
         }
 
         int contIntentos = 3;
-        info("Contraseña:");
         while (true) {
+            oblitatorio("Contraseña:");
             Scanner pregLogin2 = new Scanner(System.in);
-            password = pregLogin2.nextLine();
-            if (username != "") {
+            password = GeneradorHash.generaHash(pregLogin2.nextLine());
+            if (!password.isEmpty()) {
                 boolean loginCorrecto = limboDAO.readLogin(username, password);
                 if (loginCorrecto) {
-                    System.out.println("\u001B[33mInicio de sesión correcto.\u001B[0m");
-                    Opciones.opcionesProcess();
+                    info("Inicio de sesión correcto.", "");
+                    Opciones.opcionesProcess(usuarioBD);
                     break;
                 } else {
                     contIntentos -= 1;
                     if (contIntentos > 0) {
-                        System.out.println("\u001B[33mContraseña incorrecta, quedan "+contIntentos+" intentos.\u001B[0m");
-                        info("Contraseña:");
+                        error("Contraseña incorrecta, quedan "+contIntentos+" intentos.");
                     }else {
-                        System.out.println("\u001B[33mLimite de intentos alcanzados, saliendo del sistema.\u001B[0m");
+                        error("Limite de intentos alcanzados, saliendo del sistema.");
                         break;
                     }
                 }
+            } else {
+                error("La contraseña no puede estar vacía.");
             }
         }
     }
